@@ -1,10 +1,12 @@
 "use strict";
 
+import { v4 as uuidv4 } from "uuid";
 const db = require("../database/db");
 
 class Pet {
   constructor(user_id, name, race, birth, move_in_date) {
     this.user_id = user_id;
+    this.pet_id = uuidv4();
     this.name = name;
     this.race = race;
     this.birth = birth;
@@ -12,13 +14,14 @@ class Pet {
   }
 
   static findByUserId(id) {
-    let stmt = `SELECT * FROM pets WHERE user_id = ${id}`;
+    let stmt = `SELECT * FROM pets WHERE user_id = '${id}'`;
     return db.execute(stmt);
   }
 
-  addAnimal() {
+  addPet() {
     let stmt = `INSERT INTO pets(
       user_id,
+      pet_id,
       name,
       race,
       birth,
@@ -26,6 +29,7 @@ class Pet {
     )
     VALUES(
       '${this.user_id}',
+      '${this.pet_id}',
       '${this.name}',
       '${this.race}',
       '${this.birth}',

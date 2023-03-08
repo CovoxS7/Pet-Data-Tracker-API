@@ -12,6 +12,6 @@ const petController = require("../databaseController/petController");
 export const petRoutes = express.Router();
 
 petRoutes
-  .route("/animal")
+  .route("/pets")
   .get(userValidation.isLoggedIn, petController.getPets, (req, res) => {})
   .post(userValidation.isLoggedIn, petController.addPet, (req, res) => {});

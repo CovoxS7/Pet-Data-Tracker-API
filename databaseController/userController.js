@@ -45,6 +45,7 @@ exports.signUp = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const user = await User.findAllByName(req.body.username);
+    console.log(user);
     if (!user[0].length) {
       return res.status(400).send({
         message: "Username or password incorrect!",
@@ -55,7 +56,7 @@ exports.login = async (req, res, next) => {
         const token = jwt.sign(
           {
             username: user[0][0].username,
-            userId: user[0][0].id,
+            userId: user[0][0].user_id,
           },
           process.env.JWT_SECRETKEY,
           { expiresIn: "7d" }
