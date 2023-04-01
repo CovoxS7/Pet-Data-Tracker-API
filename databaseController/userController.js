@@ -10,7 +10,7 @@ const User = require("../databaseModels/userModel");
 exports.usernameInUse = async (req, res, next) => {
   try {
     const userId = await User.findIdByName(req.body.username);
-    if (userId[0].length) {
+    if (userId[0].length != 0) {
       return res.status(409).send({
         message: "This username is already in use!",
       });
@@ -44,19 +44,20 @@ exports.signUp = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-    const user = await User.findAllByName(req.body.username);
-    console.log(user);
-    if (!user[0].length) {
+    const userDBO = await User.findAllByName(req.body.username);
+    const userDO = userDBO[0];
+    const user = userDO[0];
+    if (userDO.length === 0) {
       return res.status(400).send({
         message: "Username or password incorrect!",
       });
     }
-    bcrypt.compare(req.body.password, user[0][0].password, (err, result) => {
+    bcrypt.compare(req.body.password, user.password, (err, result) => {
       if (result) {
         const token = jwt.sign(
           {
-            username: user[0][0].username,
-            userId: user[0][0].user_id,
+            username: user.username,
+            userId: user.user_id,
           },
           process.env.JWT_SECRETKEY,
           { expiresIn: "7d" }
@@ -64,7 +65,7 @@ exports.login = async (req, res, next) => {
         return res.status(200).send({
           message: "Logged in!",
           token,
-          user: user[0][0],
+          user: user,
         });
       } else {
         return res.status(400).send({
