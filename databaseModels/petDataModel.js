@@ -10,8 +10,8 @@ class PetData {
     this.remark = remark;
   }
   static findByPetId(id) {
-    let stmt = `SELECT * FROM pet_data WHERE pet_id = '${id}'`;
-    return db.execute(stmt);
+    let stmt = `SELECT * FROM pet_data WHERE pet_id = ?`;
+    return db.execute(stmt, [id]);
   }
   addPetData() {
     let stmt = `INSERT INTO pet_data(

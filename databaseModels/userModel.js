@@ -11,13 +11,13 @@ class User {
   }
 
   static findAllByName(username) {
-    let stmt = `SELECT * FROM users WHERE username = LOWER('${username}')`;
-    return db.execute(stmt);
+    let stmt = `SELECT * FROM users WHERE username = LOWER(?)`;
+    return db.execute(stmt, [username]);
   }
 
   static findIdByName(username) {
-    let stmt = `SELECT user_id FROM users WHERE username = LOWER('${username}')`;
-    return db.execute(stmt);
+    let stmt = `SELECT user_id FROM users WHERE username = LOWER(?)`;
+    return db.execute(stmt, [username]);
   }
 
   addUser() {

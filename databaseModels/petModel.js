@@ -14,8 +14,8 @@ class Pet {
   }
 
   static findByUserId(id) {
-    let stmt = `SELECT * FROM pets WHERE user_id = '${id}'`;
-    return db.execute(stmt);
+    let stmt = `SELECT * FROM pets WHERE user_id = ?`;
+    return db.execute(stmt, [id]);
   }
 
   addPet() {
