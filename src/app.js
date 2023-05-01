@@ -4,6 +4,10 @@
 import express from "express";
 server.use(express.json());
 
+//CORS
+import cors from "cors";
+server.use(cors());
+
 // Serversettings
 import { server, PORT } from "./server";
 
