@@ -54,18 +54,22 @@ exports.login = async (req, res, next) => {
     }
     bcrypt.compare(req.body.password, user.password, (err, result) => {
       if (result) {
+        let expiresIn = 3600000;
+        let date = new Date();
+        let expiryDate = date.setTime(date.getTime() + expiresIn);
         const token = jwt.sign(
           {
             username: user.username,
             userId: user.user_id,
           },
           process.env.JWT_SECRETKEY,
-          { expiresIn: "7d" }
+          { expiresIn: `${expiresIn}s` }
         );
         return res.status(200).send({
           message: "Logged in!",
           token,
-          user: user,
+          expiryDate: expiryDate,
+          user: user.user_id,
         });
       } else {
         return res.status(400).send({
